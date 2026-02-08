@@ -1,73 +1,155 @@
-# React + TypeScript + Vite
+Структура додатку:
+scr\
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+components
+  LoginForm
+  RegisterForm
+  Paginaton
+  Post
+  CommentStripe
+  Comment
+  ControlBar
+  layouts
 
-Currently, two official plugins are available:
+pages:
+- StipePage( index, route: /) - Відображає всі пости
+- HomePage - Відображе мої пости (Доступна лише якщо ви здійснили вхід*)
+- LoginPage - Логин (Доступна лише якщо ви не здійснили вхід*)
+- RegisterPage - Реєстрація нового користувача (Доступна лише якщо ви не здійснили вхід*)
+- NewPost - Створити новий пост (Доступна лише якщо ви здійснили вхід*)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+store
+  store.ts
+  slices
+  userSlice.ts (Login/Register actions user Thunk)
 
-## React Compiler
+api
+  axiosInstance.ts - тут створюється instance axios та лежать інтерсептори (при 401, 403 - редірет на Login, Додає ключ до запитів на бєк, додає базову часть URL API)
+  userActions.ts - тут лежать функції взаємодії з апі за допомогою axios, в них входить реєстрація та логін користувача
+  exhibitActions.ts - тут лежать функції взаємодії з апі за допомогою axios, які обробляють дії з експонатами (створення, видалення, отримання всіх експонатів, отримання всіх своїх постів експонатів, отримання одного за id)
+  commentActions.ts - дії з постами (додавання, видалення, просмотор)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+App.tsx - Точка входу в додаток ( Містить роутер, роутер що мають обмеження за правами доступу не мають бути доступні *)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+* - Це приклад як захистити роут
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
+import { Navigate } from "react-router-dom";
+
+
+
+function ProtectedRoute({ children, isAllowed }) {
+
+    if (!isAllowed) { // Беремо це значення зі стори Redux
+
+        return <Navigate to="/login" replace />;
+
+    }
+
+
+
+    return children;
+
+}
+
+
+
+import { Routes, Route } from "react-router-dom";
+
+
+
+function App({ isAuthenticated }) {
+
+    return (
+
+        <Routes>
+
+            <Route path="/login" element={<Login />} />
+
+            <Route
+
+                path="/protected"
+
+                element={
+
+                    <ProtectedRoute isAllowed={isAuthenticated}>
+
+                        <ProtectedComponent />
+
+                    </ProtectedRoute>
+
+                }
+
+            />
+
+        </Routes>
+
+    );
+
+}
+
+
+
+Як налаштувати интерсепторы
+Один з варіантів
+// src/navigate.js
+import { createBrowserHistory } from 'history';
+export const history = createBrowserHistory();
+================================================================
+// src/axiosInstance.js
+import axios from 'axios';
+import { history } from './navigate';
+const axiosInstance = axios.create({
+  baseURL: 'https://api.example.com',
+  timeout: 10000,
+});
+
+// Добавление interceptor для запросов
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+
   },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+  (error) => {
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+    return Promise.reject(error);
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+  }
+
+);
+
+
+
+// Добавление interceptor для ответов
+
+axiosInstance.interceptors.response.use(
+
+  (response) => response,
+
+  (error) => {
+
+    if (error.response && error.response.status === 401) {
+
+      // Удаляем токен
+
+      localStorage.removeItem('token');
+
+      // Редирект на страницу логина
+
+      history.push('/login');
+
+    }
+
+    return Promise.reject(error);
+
+  }
+
+);
