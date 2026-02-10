@@ -9,7 +9,7 @@ const ControlBar = () => {
         setUserMenuAnchor(event.currentTarget);
     }
     return (
-        <AppBar position="static" elevation={0}>
+        <AppBar position="fixed" elevation={0}>
             <Toolbar>
                 <Box sx={{ color: "white" }}>
                     <IconButton aria-label="Home" color="inherit"><HomeIcon /></IconButton>

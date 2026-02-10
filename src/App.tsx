@@ -4,13 +4,14 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage';
 import UserLayout from './layouts/UserLayout/UserLayout';
 import AuthorizationLayout from './layouts/AuthorizationLayout/AuthorizationLayout';
+import StripePage from './pages/StripePage/StripePage';
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<UserLayout />}>
-          <Route path='/' element={<div>StipePage</div>} />
+          <Route path='/' element={<StripePage />} />
           <Route path='home' element={<div>HomePage</div>} />
           <Route path='newpost' element={<div>NewPost</div>} />
         </Route>
