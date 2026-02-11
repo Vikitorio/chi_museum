@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Card, CardActions, CardContent, CardHeader, Collapse, Divider, IconButton, List } from "@mui/material";
+import { Avatar, Badge, Box, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, Divider, IconButton, List } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 import Comment from "../Comment/Comment";
@@ -37,7 +37,8 @@ const comments = [{
 }]
 const Post = (props: PostProps) => {
     const [date, time] = dateFormatter(props.createdAt);
-    const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false)
+    const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
+    const [imageSrc, setImageSrc] = useState<string>(props.imageUrl);
 
     const toggleCommentSection = () => {
         setIsCommentsOpen(!isCommentsOpen);
@@ -51,9 +52,18 @@ const Post = (props: PostProps) => {
                     subheader={date + ", " + time}
                 />
                 <CardContent>
-                    <Box>
-                        <img src={props.imageUrl} />
-                    </Box>
+                    <CardMedia
+                        component="img"
+                        image={imageSrc}
+                        onError={() => {
+                            setImageSrc("/general-img-landscape.png");
+                        }}
+                        sx={{
+                            height: "auto",
+                            width: "100%",
+                            objectFit: "cover",
+                        }}
+                    />
                     <Box>
                         {props.description}
                     </Box>
