@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material";
 import Post from "../../components/Post/Post";
+import PaginationPanel from "../../components/Pagination/PaginationPanel";
 
 const StripePage = () => {
 
@@ -94,9 +95,12 @@ const StripePage = () => {
         },
     ];
     return (
-        <Stack spacing={3}>
-            {posts.map((post) => <Post {...post} />)}
-        </Stack >
+        <>
+            <Stack spacing={3} sx={{ paddingBottom: "64px", alignItems: "center" }}>
+                {posts.map((post) => <Post {...post} />)}
+            </Stack >
+            <PaginationPanel count={3} onPageChange={() => { }} />
+        </>
     );
 }
 
