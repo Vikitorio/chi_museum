@@ -5,22 +5,25 @@ import RegistrationPage from './pages/RegistrationPage/RegistrationPage';
 import UserLayout from './layouts/UserLayout/UserLayout';
 import AuthorizationLayout from './layouts/AuthorizationLayout/AuthorizationLayout';
 import StripePage from './pages/StripePage/StripePage';
+import WrongRoutePage from './pages/WrongRoutePage/WrongRoutePage';
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<UserLayout />}>
-          <Route path='/' element={<StripePage />} />
+          <Route path='/:page?' element={<StripePage />} />
           <Route path='home' element={<div>HomePage</div>} />
           <Route path='newpost' element={<div>NewPost</div>} />
+          <Route path='*' element={<WrongRoutePage />} />
         </Route>
+
         <Route element={<AuthorizationLayout />}>
           <Route path='login' element={<LoginPage />} />
           <Route path='registration' element={<RegistrationPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter >
   )
 }
 

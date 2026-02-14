@@ -6,14 +6,17 @@ class ApiWrapper {
         this.apiRoot = apiRoot;
     }
 
-    async get(url: string) {
-        return AxiosInstance.get(this.apiRoot + url);
+    async get<T>(url: string): Promise<T> {
+        const response = await AxiosInstance.get<T>(this.apiRoot + url);
+        return response.data;
     }
-    async post(url: string, data: Object) {
-        return await AxiosInstance.post(this.apiRoot + url, data);
+    async post<T>(url: string, data: Object): Promise<T> {
+        const response = await AxiosInstance.post<T>(this.apiRoot + url, data);
+        return response.data;
     }
-    async delete(url: string, data: Object) {
-        return await AxiosInstance.delete(this.apiRoot + url, data);
+    async delete<T>(url: string, data: Object): Promise<T> {
+        const response = await AxiosInstance.delete<T>(this.apiRoot + url, data);
+        return response.data;
     }
 
 

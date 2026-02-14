@@ -1,12 +1,12 @@
 import { Box, Pagination } from "@mui/material";
 interface PaginationPanelProps {
     count: number,
-    defaultPage?: number,
+    defaultPage: number,
     onPageChange: (newPage: number) => void,
 }
 const PaginationPanel = (props: PaginationPanelProps) => {
 
-    const defaultPage = props.defaultPage ? props.defaultPage : 1;
+
     return (
         <Box sx={{
             height: "42px",
@@ -22,7 +22,7 @@ const PaginationPanel = (props: PaginationPanelProps) => {
             <Pagination
                 onChange={(_, page) => props.onPageChange(page)}
                 count={props.count}
-                defaultPage={defaultPage}
+                page={props.defaultPage}
                 variant="outlined"
                 shape="rounded"
             />
