@@ -4,6 +4,9 @@ import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 import Comment from "../Comment/Comment";
 import dateFormatter from "../../utils/dateFormatter";
 import { useState } from "react";
+import commentApi from "../../api/CommentApi";
+import { useRequest } from "ahooks";
+import type CommentInterface from "../../interfaces/commentInterface";
 
 interface PostProps {
     id: number,
@@ -39,10 +42,16 @@ const Post = (props: PostProps) => {
     const [date, time] = dateFormatter(props.createdAt);
     const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
     const [imageSrc, setImageSrc] = useState<string>(props.imageUrl);
+    const { data: commentsData = [], run, loading, error } = useRequest((postId: number) => commentApi.getComments(postId), {
+        manual: true,
+        refreshDeps: [props.commentCount],
+
+    });
 
     const toggleCommentSection = () => {
         setIsCommentsOpen(!isCommentsOpen);
     }
+
     return (
         <>
             <Card sx={{ width: "500px" }}>
@@ -62,6 +71,7 @@ const Post = (props: PostProps) => {
                             height: "auto",
                             width: "100%",
                             objectFit: "cover",
+                            minHeight: "350px"
                         }}
                     />
                     <Box>
@@ -71,8 +81,8 @@ const Post = (props: PostProps) => {
                 <Divider />
                 <CardActions>
                     <Box sx={{ marginLeft: "auto" }}>
-                        <IconButton onClick={toggleCommentSection}>
-                            <Badge badgeContent={1} color="primary">
+                        <IconButton onClick={() => {run(props.id); toggleCommentSection();}} disabled={props.commentCount == 0}>
+                            <Badge badgeContent={props.commentCount} color="primary">
                                 <SpeakerNotesIcon />
                             </Badge>
                         </IconButton>
@@ -84,7 +94,7 @@ const Post = (props: PostProps) => {
                 <Divider />
                 <Collapse in={isCommentsOpen}>
                     <List sx={{ padding: "10px 5px 10px 30px" }}>
-                        {comments.map((item) => {
+                        {commentsData.map((item) => {
                             return (<Comment {...item} />)
                         })}
                     </List>

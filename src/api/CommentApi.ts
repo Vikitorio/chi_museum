@@ -1,3 +1,4 @@
+import type CommentInterface from "../interfaces/commentInterface";
 import ApiWrapper from "./ApiWrapper";
 
 class CommentApi extends ApiWrapper {
@@ -5,17 +6,18 @@ class CommentApi extends ApiWrapper {
     constructor(rootUrl: string) {
         super(rootUrl);
     }
-    getComments(postId: number) {
-        return this.get(`/${postId}/comments`);
+    async getComments(postId: number) {
+        const response = await this.get<CommentInterface[]>(`/${postId}/comments`);
+        return response.data;
     }
-    addComment(data: { text: string }) {
+    async addComment(data: { text: string }) {
         return this.post("/my-posts", data);
     }
-    deleteComment(id: number) {
+    async deleteComment(id: number) {
         return this.delete(`/${id}`, {});
     }
 }
 
 
-const commentApi = new CommentApi('api/exibits');
+const commentApi = new CommentApi('api/exhibits');
 export default commentApi;

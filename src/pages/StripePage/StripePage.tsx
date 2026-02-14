@@ -5,13 +5,14 @@ import { useRequest } from "ahooks";
 import exhibitsApi from "../../api/ExhibitsApi";
 import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
+import PostSkeleton from "../../components/PostSkeleton/PostSkeleton";
 
 const StripePage = () => {
     const navigation = useNavigate();
     const { page } = useParams();
     const [currentPage, setCurrentPage] = useState<number>(Number(page) || 1);
     const { data, error, loading } = useRequest(() => exhibitsApi.getExibits(currentPage), {
-        loadingDelay: 2000,
+        loadingDelay: 4000,
         refreshDeps: [currentPage]
     });
 
@@ -24,11 +25,12 @@ const StripePage = () => {
     return (
         <>
             <Stack spacing={3} sx={{ paddingBottom: "64px", alignItems: "center" }}>
-                {data?.data && data.data.map((post) => <Post {...post} />)}
+                {loading ? (<PostSkeleton />) : (data?.data && data.data.map((post) => <Post {...post} />))}
             </Stack >
             {data && <PaginationPanel defaultPage={currentPage} count={data.lastPage} onPageChange={changePage} />}
-        </>
-    );
+        </>);
+
+
 }
 
 export default StripePage;
