@@ -16,7 +16,7 @@ function App() {
           <Route path='/:page?' element={<StripePage />} />
           <Route element={<ProtectedRoute />} >
             <Route path='home' element={<div>HomePage</div>} />
-            <Route path='newpost' element={<div>NewPost</div>} />
+            <Route path='new-post' element={<div>NewPost</div>} />
           </Route >
           <Route path='*' element={<WrongRoutePage />} />
         </Route >

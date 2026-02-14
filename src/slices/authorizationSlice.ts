@@ -10,10 +10,14 @@ export const authorizationSlice = createSlice({
         setAuthorizationStatus: (state, action) => {
             localStorage.setItem("token", action.payload);
             state.authorizated = action.payload;
+        },
+        logOut: (state) => {
+            localStorage.removeItem("token");
+            state.authorizated = false;
         }
     }
 
 })
-export const { setAuthorizationStatus } = authorizationSlice.actions;
+export const { setAuthorizationStatus , logOut} = authorizationSlice.actions;
 
 export default authorizationSlice.reducer;

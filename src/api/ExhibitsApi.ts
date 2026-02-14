@@ -24,19 +24,19 @@ class ExhibitsApi extends ApiWrapper {
         super(rootUrl);
     }
     async getExibits(page: number) {
-        const response = await this.get<{data: ExibitsPage, status:number}>(`?page=${page}&limit=10`);
-        return response.data.data;
+        const response = await this.get<ExibitsPage>(`?page=${page}&limit=10`);
+        return response.data;
     }
     async getMyExibits() {
-        const response = await this.get<{data:any,  status:number}>("/my-posts");
+        const response = await this.get<any>("/my-posts");
         return response.data;
     }
     async addNewExibit(data: Object) {
-        const response = await this.post<{data:any,  status:number}>("/", data);
+        const response = await this.post<any>("/", data);
         return response.data;
     }
     async deleteExibit(id: number) {
-        const response = await this.delete<{data:any,  status:number}>(`/${id}`, {});
+        const response = await this.delete<any>(`/${id}`, {});
         return response.data;
     }
 }

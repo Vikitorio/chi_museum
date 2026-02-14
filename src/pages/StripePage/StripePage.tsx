@@ -20,12 +20,13 @@ const StripePage = () => {
         setCurrentPage(page);
         navigation(`/${page}`);
     }
+    console.log(data);
     return (
         <>
             <Stack spacing={3} sx={{ paddingBottom: "64px", alignItems: "center" }}>
                 {data?.data && data.data.map((post) => <Post {...post} />)}
             </Stack >
-            {data?.data && <PaginationPanel defaultPage={currentPage} count={data.lastPage} onPageChange={changePage} />}
+            {data && <PaginationPanel defaultPage={currentPage} count={data.lastPage} onPageChange={changePage} />}
         </>
     );
 }
