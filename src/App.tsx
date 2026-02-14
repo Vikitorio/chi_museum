@@ -6,6 +6,7 @@ import UserLayout from './layouts/UserLayout/UserLayout';
 import AuthorizationLayout from './layouts/AuthorizationLayout/AuthorizationLayout';
 import StripePage from './pages/StripePage/StripePage';
 import WrongRoutePage from './pages/WrongRoutePage/WrongRoutePage';
+import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute';
 function App() {
 
   return (
@@ -13,11 +14,12 @@ function App() {
       <Routes>
         <Route element={<UserLayout />}>
           <Route path='/:page?' element={<StripePage />} />
-          <Route path='home' element={<div>HomePage</div>} />
-          <Route path='newpost' element={<div>NewPost</div>} />
+          <Route element={<ProtectedRoute />} >
+            <Route path='home' element={<div>HomePage</div>} />
+            <Route path='newpost' element={<div>NewPost</div>} />
+          </Route >
           <Route path='*' element={<WrongRoutePage />} />
-        </Route>
-
+        </Route >
         <Route element={<AuthorizationLayout />}>
           <Route path='login' element={<LoginPage />} />
           <Route path='registration' element={<RegistrationPage />} />

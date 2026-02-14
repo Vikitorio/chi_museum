@@ -1,23 +1,34 @@
 import { TextField, Button, Card, CardContent, CardHeader, Link } from "@mui/material";
 import authApi from "../../api/AuthApi";
+import { useDispatch } from "react-redux";
+import { setAuthorizationStatus } from "../../slices/authorizationSlice";
+import { useNavigate } from "react-router";
+
 import styles from "./styles.module.css";
 const LoginPage = () => {
-    const logIn = () => {
-        authApi.logIn({
-            "username": "username123",
-            "password": "password123"
-
-        });
+    const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const logIn = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const login = data.get("login");
+        const password = data.get("password");
+        const response = await authApi.logIn({ "username": login, "password": password });
+        if (response.access_token) {
+            dispatch(setAuthorizationStatus(true));
+            localStorage.setItem("token", response.access_token);
+            navigate("/");
+        }
     }
     return (
         <Card>
             <CardContent>
                 <CardHeader title="Authorization" />
-                <form className={styles.form} onSubmit={(event) => { event.target.preventDefault() }}>
-                    <TextField margin="normal" label="Login" variant="outlined" required fullWidth />
-                    <TextField margin="normal" label="Password" variant="outlined" required fullWidth />
+                <form className={styles.form} onSubmit={logIn}>
+                    <TextField name="login" margin="normal" label="Login" variant="outlined" required fullWidth />
+                    <TextField name="password" margin="normal" label="Password" variant="outlined" required fullWidth />
 
-                    <Button fullWidth className={styles.formSubmit} variant="contained" onClick={logIn}>Submit</Button>
+                    <Button fullWidth className={styles.formSubmit} variant="contained" type="submit">Submit</Button>
                 </form>
                 <Link>Don`t have account? Registration</Link>
             </CardContent>
