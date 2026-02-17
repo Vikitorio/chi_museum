@@ -28,10 +28,10 @@ class ExhibitsApi extends ApiWrapper {
         return response.data;
     }
     async getMyExibits(page: number) {
-        const response = await this.get<ExibitsPage>("/my-posts");
+        const response = await this.get<ExibitsPage>(`/my-posts/?page=${page}&limit=10`);
         return response.data;
     }
-    async addNewExibit(data: Object) {
+    async addNewExibit(data: object) {
         const response = await this.post<any>("/", data);
         return response.data;
     }

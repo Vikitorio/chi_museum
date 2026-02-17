@@ -5,12 +5,11 @@ class UserApi extends ApiWrapper {
     constructor(rootUrl: string) {
         super(rootUrl);
     }
-    async userRegister(data: Object) {
-        const response = await this.post<{ id: number, username: string }>("/register", data);
-        return response.data;
+    async userRegister(data: { username: string, password: string }) {
+        return await this.post<{ id: number, username: string }>("/register", data);
     }
 }
 
 
-const userApi = new UserApi('user');
+const userApi = new UserApi('users');
 export default userApi;

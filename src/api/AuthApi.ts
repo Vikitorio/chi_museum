@@ -5,9 +5,9 @@ class AuthApi extends ApiWrapper {
     constructor(rootUrl: string) {
         super(rootUrl);
     }
-    async logIn(data: Object) {
-       const response = await this.post<{userName:string, userId:string, access_token:string}>("/auth/login", data);
-       return response.data;
+    async logIn(data: { login: string, password: string }) {
+        const response = await this.post<{ userName: string, userId: string, access_token: string }>("/auth/login", data);
+        return response.data;
     }
 }
 

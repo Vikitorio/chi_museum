@@ -13,6 +13,7 @@ const LoginPage = () => {
         const data = new FormData(event.currentTarget);
         const login = data.get("login");
         const password = data.get("password");
+        if (typeof login !== "string" || typeof password !== "string") { return; }
         const response = await authApi.logIn({ "username": login, "password": password });
         if (response.access_token) {
             dispatch(setAuthorizationStatus(true));
