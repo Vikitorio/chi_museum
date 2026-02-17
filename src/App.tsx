@@ -15,7 +15,7 @@ function App() {
         <Route element={<UserLayout />}>
           <Route path='/:page?' element={<StripePage />} />
           <Route element={<ProtectedRoute />} >
-            <Route path='home' element={<div>HomePage</div>} />
+            <Route path='home' element={<StripePage myPosts/>} />
             <Route path='new-post' element={<div>NewPost</div>} />
           </Route >
           <Route path='*' element={<WrongRoutePage />} />

@@ -7,11 +7,16 @@ import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
 import PostSkeleton from "../../components/PostSkeleton/PostSkeleton";
 
-const StripePage = () => {
+
+interface StripeProps {
+    myPosts?: boolean;
+}
+
+const StripePage = ({ myPosts }: StripeProps) => {
     const navigation = useNavigate();
     const { page } = useParams();
     const [currentPage, setCurrentPage] = useState<number>(Number(page) || 1);
-    const { data, error, loading } = useRequest(() => exhibitsApi.getExibits(currentPage), {
+    const { data, error, loading } = useRequest(() => !myPosts ? exhibitsApi.getExibits(currentPage) : exhibitsApi.getMyExibits(currentPage), {
         loadingDelay: 4000,
         refreshDeps: [currentPage]
     });

@@ -6,7 +6,6 @@ import dateFormatter from "../../utils/dateFormatter";
 import { useState } from "react";
 import commentApi from "../../api/CommentApi";
 import { useRequest } from "ahooks";
-import type CommentInterface from "../../interfaces/commentInterface";
 
 interface PostProps {
     id: number,
@@ -20,24 +19,7 @@ interface PostProps {
     createdAt: string
 }
 
-const comments = [{
-    "id": 115,
-    "text": "@asddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-    "createdAt": "2026-02-10T01:03:22.993Z",
-    "user": {
-        "id": 89,
-        "username": "yuliia"
-    }
-},
-{
-    "id": 115,
-    "text": "@",
-    "createdAt": "2026-02-10T01:03:22.993Z",
-    "user": {
-        "id": 89,
-        "username": "yuliia"
-    }
-}]
+
 const Post = (props: PostProps) => {
     const [date, time] = dateFormatter(props.createdAt);
     const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
