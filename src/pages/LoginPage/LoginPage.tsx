@@ -1,10 +1,9 @@
-import { TextField, Button, Card, CardContent, CardHeader, Link } from "@mui/material";
 import authApi from "../../api/AuthApi";
 import { useDispatch } from "react-redux";
 import { setAuthorization, setUserId } from "../../slices/authorizationSlice";
 import { useNavigate } from "react-router";
 
-import styles from "./styles.module.css";
+import LoginForm from "../../components/LoginForm/LoginForm";
 const LoginPage = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
@@ -22,18 +21,7 @@ const LoginPage = () => {
         }
     }
     return (
-        <Card>
-            <CardContent>
-                <CardHeader title="Authorization" />
-                <form className={styles.form} onSubmit={logIn}>
-                    <TextField name="login" margin="normal" label="Login" variant="outlined" required fullWidth />
-                    <TextField name="password" margin="normal" label="Password" variant="outlined" required fullWidth />
-
-                    <Button fullWidth className={styles.formSubmit} variant="contained" type="submit">Submit</Button>
-                </form>
-                <Link>Don`t have account? Registration</Link>
-            </CardContent>
-        </Card>
+        <LoginForm onSubmit={logIn} />
     );
 
 }

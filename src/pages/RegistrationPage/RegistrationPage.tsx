@@ -1,7 +1,6 @@
-import { TextField, Button, Card, Link, CardHeader, CardContent } from "@mui/material";
 import { useNavigate } from "react-router";
-import styles from "./styles.module.css";
 import userApi from "../../api/UserApi";
+import RegisterForm from "../../components/RegisterForm/RegisterForm";
 const RegistrationPage = () => {
     const navigate = useNavigate()
     const createUser = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -16,17 +15,7 @@ const RegistrationPage = () => {
         }
     }
     return (
-        <Card>
-            <CardContent>
-                <CardHeader title="Create account" />
-                <form className={styles.form} onSubmit={createUser}>
-                    <TextField name="login" label="Username" margin="normal" variant="outlined" required fullWidth />
-                    <TextField name="password" label="Password" margin="normal" variant="outlined" required fullWidth />
-                    <Button variant="contained" type="submit" className={styles.formSubmit} fullWidth>Submit</Button>
-                </form>
-                <Link>Have account? Login</Link>
-            </CardContent>
-        </Card>
+        <RegisterForm onSubmit={createUser}/>
     );
 
 }
