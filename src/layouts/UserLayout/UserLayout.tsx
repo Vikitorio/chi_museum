@@ -7,7 +7,7 @@ const UserLayout = () => {
     return (
         <EmptyLayout>
             <ControlBar />
-            <div style={{ flex: 1, marginTop: "64px", padding: "20px 0", width: "100%"}}>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", marginTop: "64px", padding: "20px 0", width: "100%" }}>
                 <Outlet />
             </div>
         </EmptyLayout >

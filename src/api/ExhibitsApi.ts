@@ -23,19 +23,19 @@ class ExhibitsApi extends ApiWrapper {
     constructor(rootUrl: string) {
         super(rootUrl);
     }
-    async getExibits(page: number) {
+    async getExhibits(page: number) {
         const response = await this.get<ExibitsPage>(`?page=${page}&limit=10`);
         return response.data;
     }
-    async getMyExibits(page: number) {
+    async getMyExhibits(page: number) {
         const response = await this.get<ExibitsPage>(`/my-posts/?page=${page}&limit=10`);
         return response.data;
     }
-    async addNewExibit(data: object) {
+    async addNewExhibit(data: object) {
         const response = await this.post<any>("/", data);
-        return response.data;
+        return response;
     }
-    async deleteExibit(id: number) {
+    async deleteExhibit(id: number) {
         const response = await this.delete<any>(`/${id}`, {});
         return response.data;
     }

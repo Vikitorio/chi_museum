@@ -16,7 +16,7 @@ const StripePage = ({ myPosts }: StripeProps) => {
     const navigation = useNavigate();
     const { page } = useParams();
     const [currentPage, setCurrentPage] = useState<number>(Number(page) || 1);
-    const { data, error, loading } = useRequest(() => !myPosts ? exhibitsApi.getExibits(currentPage) : exhibitsApi.getMyExibits(currentPage), {
+    const { data, error, loading } = useRequest(() => !myPosts ? exhibitsApi.getExhibits(currentPage) : exhibitsApi.getMyExhibits(currentPage), {
         loadingDelay: 4000,
         refreshDeps: [currentPage]
     });

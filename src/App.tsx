@@ -7,6 +7,7 @@ import AuthorizationLayout from './layouts/AuthorizationLayout/AuthorizationLayo
 import StripePage from './pages/StripePage/StripePage';
 import WrongRoutePage from './pages/WrongRoutePage/WrongRoutePage';
 import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute';
+import NewPostPage from './pages/NewPost/NewPostPage';
 function App() {
 
   return (
@@ -15,8 +16,8 @@ function App() {
         <Route element={<UserLayout />}>
           <Route path='/:page?' element={<StripePage />} />
           <Route element={<ProtectedRoute />} >
-            <Route path='home' element={<StripePage myPosts/>} />
-            <Route path='new-post' element={<div>NewPost</div>} />
+            <Route path='home' element={<StripePage myPosts />} />
+            <Route path='new-post' element={<NewPostPage />} />
           </Route >
           <Route path='*' element={<WrongRoutePage />} />
         </Route >
