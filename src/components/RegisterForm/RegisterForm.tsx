@@ -9,10 +9,10 @@ const RegisterForm = (props: RegisterFormProps) => {
         <Card>
             <CardContent>
                 <CardHeader title="Create account" />
-                <form onSubmit={props.onSubmit}>
+                <form onSubmit={props.onSubmit} style={{ marginBottom: "20px" }}>
                     <TextField name="login" label="Username" margin="normal" variant="outlined" required fullWidth />
                     <TextField name="password" label="Password" margin="normal" variant="outlined" required fullWidth />
-                    <Button variant="contained" type="submit" fullWidth>Submit</Button>
+                    <Button variant="contained" type="submit" fullWidth sx={{ marginTop: "20px" }}>Submit</Button>
                 </form>
                 <Link>Have account? Login</Link>
             </CardContent>
