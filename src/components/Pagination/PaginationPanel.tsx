@@ -25,6 +25,12 @@ const PaginationPanel = (props: PaginationPanelProps) => {
                 page={props.defaultPage}
                 variant="outlined"
                 shape="rounded"
+                sx={{
+                    '& .MuiPaginationItem-root': {
+                        color: 'primary.contrastText',
+                        borderColor: 'primary.contrastText',
+                    },
+                }}
             />
         </Box>);
 }

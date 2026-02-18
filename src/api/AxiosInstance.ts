@@ -19,7 +19,7 @@ AxiosInstance.interceptors.request.use((config) => {
 AxiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
+        if (error.response?.status === 401 || error.response?.status === 403) {
             store.dispatch(logOut());
             window.location.href = "/login";
         }

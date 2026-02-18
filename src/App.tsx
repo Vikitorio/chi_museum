@@ -9,27 +9,30 @@ import WrongRoutePage from './pages/WrongRoutePage/WrongRoutePage';
 import ProtectedRoute from './router/ProtectedRoute/ProtectedRoute';
 import NewPostPage from './pages/NewPost/NewPostPage';
 import AuthRoute from './router/AuthRoute/AuthRoute';
+import { CustomThemeProvider } from './providers/ThemeProvider/ThemeProvider';
 function App() {
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<UserLayout />}>
-          <Route path='/:page?' element={<StripePage />} />
-          <Route element={<ProtectedRoute />} >
-            <Route path='home' element={<StripePage myPosts />} />
-            <Route path='new-post' element={<NewPostPage />} />
+    <CustomThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<UserLayout />}>
+            <Route path='/:page?' element={<StripePage />} />
+            <Route element={<ProtectedRoute />} >
+              <Route path='home' element={<StripePage myPosts />} />
+              <Route path='new-post' element={<NewPostPage />} />
+            </Route >
+            <Route path='*' element={<WrongRoutePage />} />
           </Route >
-          <Route path='*' element={<WrongRoutePage />} />
-        </Route >
-        <Route element={<AuthRoute />}>
-          <Route element={<AuthorizationLayout />}>
-            <Route path='login' element={<LoginPage />} />
-            <Route path='registration' element={<RegistrationPage />} />
+          <Route element={<AuthRoute />}>
+            <Route element={<AuthorizationLayout />}>
+              <Route path='login' element={<LoginPage />} />
+              <Route path='registration' element={<RegistrationPage />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter >
+        </Routes>
+      </BrowserRouter >
+    </CustomThemeProvider>
   )
 }
 
