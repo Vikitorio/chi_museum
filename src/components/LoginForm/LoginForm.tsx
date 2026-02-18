@@ -1,4 +1,5 @@
-import { Button, Card, CardContent, CardHeader, Link, TextField } from "@mui/material";
+import { Button, Card, CardContent, CardHeader, TextField } from "@mui/material";
+import { Link } from "react-router";
 
 interface LoginFormProps {
     onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
@@ -14,7 +15,7 @@ const LoginForm = (props: LoginFormProps) => {
 
                 <Button fullWidth variant="contained" sx={{ marginTop: "20px" }} type="submit">Submit</Button>
             </form>
-            <Link>Don`t have account? Registration</Link>
+            <Link to="/registration">Don`t have account? Registration</Link>
         </CardContent>
     </Card>);
 
