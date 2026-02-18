@@ -6,8 +6,9 @@ import UserLayout from './layouts/UserLayout/UserLayout';
 import AuthorizationLayout from './layouts/AuthorizationLayout/AuthorizationLayout';
 import StripePage from './pages/StripePage/StripePage';
 import WrongRoutePage from './pages/WrongRoutePage/WrongRoutePage';
-import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute';
+import ProtectedRoute from './router/ProtectedRoute/ProtectedRoute';
 import NewPostPage from './pages/NewPost/NewPostPage';
+import AuthRoute from './router/AuthRoute/AuthRoute';
 function App() {
 
   return (
@@ -21,9 +22,11 @@ function App() {
           </Route >
           <Route path='*' element={<WrongRoutePage />} />
         </Route >
-        <Route element={<AuthorizationLayout />}>
-          <Route path='login' element={<LoginPage />} />
-          <Route path='registration' element={<RegistrationPage />} />
+        <Route element={<AuthRoute />}>
+          <Route element={<AuthorizationLayout />}>
+            <Route path='login' element={<LoginPage />} />
+            <Route path='registration' element={<RegistrationPage />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter >
