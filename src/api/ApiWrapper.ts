@@ -13,14 +13,14 @@ class ApiWrapper {
             status: response.status
         };
     }
-    async post<T>(url: string, data: Object): Promise<{ data: T; status: number }> {
+    async post<T>(url: string, data: object): Promise<{ data: T; status: number }> {
         const response = await AxiosInstance.post<T>(this.apiRoot + url, data);
         return {
             data: response.data,
             status: response.status
         };
     }
-    async delete<T>(url: string, data: Object): Promise<{ data: T; status: number }> {
+    async delete<T>(url: string, data: object): Promise<{ data: T; status: number }> {
         const response = await AxiosInstance.delete<T>(this.apiRoot + url, data);
         return {
             data: response.data,

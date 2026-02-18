@@ -32,11 +32,11 @@ class ExhibitsApi extends ApiWrapper {
         return response.data;
     }
     async addNewExhibit(data: object) {
-        const response = await this.post<any>("/", data);
+        const response = await this.post<FormData>("/", data);
         return response;
     }
     async deleteExhibit(id: number) {
-        const response = await this.delete<any>(`/${id}`, {});
+        const response = await this.delete(`/${id}`, {});
         return response;
     }
 }
