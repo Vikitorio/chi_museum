@@ -1,7 +1,7 @@
 import { TextField, Button, Card, CardContent, CardHeader, Link } from "@mui/material";
 import authApi from "../../api/AuthApi";
 import { useDispatch } from "react-redux";
-import { setAuthorizationStatus } from "../../slices/authorizationSlice";
+import { setAuthorization, setUserId } from "../../slices/authorizationSlice";
 import { useNavigate } from "react-router";
 
 import styles from "./styles.module.css";
@@ -16,8 +16,8 @@ const LoginPage = () => {
         if (typeof login !== "string" || typeof password !== "string") { return; }
         const response = await authApi.logIn({ "username": login, "password": password });
         if (response.access_token) {
-            dispatch(setAuthorizationStatus(true));
-            localStorage.setItem("token", response.access_token);
+            dispatch(setAuthorization(response.access_token));
+            dispatch(setUserId(response.userId));
             navigate("/");
         }
     }

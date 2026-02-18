@@ -1,11 +1,11 @@
-import { Avatar, Badge, Box, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, Divider, IconButton, List } from "@mui/material";
+import { Avatar, Badge, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Dialog, DialogActions, DialogTitle, Divider, IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
-import Comment from "../Comment/Comment";
 import dateFormatter from "../../utils/dateFormatter";
 import { useState } from "react";
-import commentApi from "../../api/CommentApi";
 import { useRequest } from "ahooks";
+import exhibitsApi from "../../api/ExhibitsApi";
+import CommentStripe from "../CommentStripe/CommentStripe";
 
 interface PostProps {
     id: number,
@@ -16,7 +16,9 @@ interface PostProps {
         username: string
     },
     commentCount: number,
-    createdAt: string
+    createdAt: string,
+    myId: number | null,
+    onDeleted?: (id: number) => void
 }
 
 
@@ -24,11 +26,18 @@ const Post = (props: PostProps) => {
     const [date, time] = dateFormatter(props.createdAt);
     const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
     const [imageSrc, setImageSrc] = useState<string>(props.imageUrl);
-    const { data: commentsData = [], run, loading, error } = useRequest((postId: number) => commentApi.getComments(postId), {
-        manual: true,
-        refreshDeps: [props.commentCount],
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
 
-    });
+    const { run: runDelete, loading: deleteLoading } = useRequest(
+        () => exhibitsApi.deleteExhibit(props.id),
+        {
+            manual: true,
+            onSuccess: () => {
+                setDeleteDialogOpen(false);
+                props.onDeleted?.(props.id);
+            }
+        }
+    );
 
     const toggleCommentSection = () => {
         setIsCommentsOpen(!isCommentsOpen);
@@ -63,26 +72,44 @@ const Post = (props: PostProps) => {
                 <Divider />
                 <CardActions>
                     <Box sx={{ marginLeft: "auto" }}>
-                        <IconButton onClick={() => {run(props.id); toggleCommentSection();}} disabled={props.commentCount == 0}>
+                        <IconButton onClick={() => {
+                            toggleCommentSection();
+                        }}>
                             <Badge badgeContent={props.commentCount} color="primary">
                                 <SpeakerNotesIcon />
                             </Badge>
                         </IconButton>
-                        <IconButton>
+                        {props.user.id === props.myId && <IconButton onClick={() => setDeleteDialogOpen(true)}>
                             <DeleteIcon color="error" />
-                        </IconButton>
+                        </IconButton>}
                     </Box>
                 </CardActions>
                 <Divider />
-                <Collapse in={isCommentsOpen}>
-                    <List sx={{ padding: "10px 5px 10px 30px" }}>
-                        {commentsData.map((item) => {
-                            return (<Comment {...item} />)
-                        })}
-                    </List>
-                </Collapse>
+                <CommentStripe
+                    postId={props.id}
+                    myId={props.myId}
+                    commentCount={props.commentCount}
+                    isOpen={isCommentsOpen}
+                />
             </Card>
+            <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+                <DialogTitle>Delete post?</DialogTitle>
+                <DialogActions>
+                    <Button onClick={() => setDeleteDialogOpen(false)} disabled={deleteLoading}>
+                        Cancel
+                    </Button>
+                    <Button
+                        onClick={() => runDelete()}
+                        color="error"
+                        variant="contained"
+                        disabled={deleteLoading}
+                    >
+                        {deleteLoading ? "Deleting..." : "Delete"}
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
+
     );
 }
 

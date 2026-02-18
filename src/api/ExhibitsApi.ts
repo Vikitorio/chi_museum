@@ -37,7 +37,7 @@ class ExhibitsApi extends ApiWrapper {
     }
     async deleteExhibit(id: number) {
         const response = await this.delete<any>(`/${id}`, {});
-        return response.data;
+        return response;
     }
 }
 

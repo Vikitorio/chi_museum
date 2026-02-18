@@ -10,11 +10,11 @@ class CommentApi extends ApiWrapper {
         const response = await this.get<CommentInterface[]>(`/${postId}/comments`);
         return response.data;
     }
-    async addComment(data: { text: string }) {
-        return this.post("/my-posts", data);
+    async addComment(exhibitId: number, data: { text: string }) {
+        return await this.post(`/${exhibitId}/comments`, data);
     }
-    async deleteComment(id: number) {
-        return this.delete(`/${id}`, {});
+    async deleteComment(postId: number, id: number) {
+        return await this.delete(`/${postId}/comments/${id}`, {});
     }
 }
 
