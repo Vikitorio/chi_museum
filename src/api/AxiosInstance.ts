@@ -1,5 +1,6 @@
 import axios from "axios";
-
+import store from "../redux-store/store";
+import { logOut } from "../slices/authorizationSlice";
 
 const AxiosInstance = axios.create({ baseURL: "https://playground.zenberry.one/" });
 AxiosInstance.interceptors.request.use((config) => {
@@ -14,5 +15,16 @@ AxiosInstance.interceptors.request.use((config) => {
         return Promise.reject(error);
 
     })
+
+AxiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            store.dispatch(logOut());
+            window.location.href = "/login";
+        }
+        return Promise.reject(error);
+    }
+);
 
 export default AxiosInstance;
