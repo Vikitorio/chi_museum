@@ -7,26 +7,21 @@ import { CircularProgress } from "@mui/material";
 const NewPostPage = () => {
     const navigate = useNavigate();
     const [postSaving, setPostSaving] = useState(false);
-    const handleSubmit = async (
-        event: React.FormEvent<HTMLFormElement>, imageFile: File | null
-    ) => {
-        event.preventDefault();
-        if (!imageFile) return;
+    const handleSubmit = async ({ description, image }: { description: string; image: File | null }) => {
+        if (!image) return;
         setPostSaving(true);
         const formData = new FormData();
-        formData.append("image", imageFile);
-        const data = new FormData(event.currentTarget);
-        const description = data.get("description");
-        formData.append("description", String(description));
+        formData.append("image", image);
+        formData.append("description", description);
         const response = await exhibitsApi.addNewExhibit(formData);
-        if (response.status == 201) {
+        if (response.status === 201) {
             navigate("/home");
         }
         setPostSaving(false);
     };
     return (
         <div style={{ flex: "1", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            {!postSaving ? <NewPostForm handleSubmit={handleSubmit} /> : <CircularProgress />}
+            {!postSaving ? <NewPostForm onSubmit={handleSubmit} /> : <CircularProgress />}
         </div>
     )
 }
