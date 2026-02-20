@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Dialog, DialogActions, DialogTitle, Divider, IconButton } from "@mui/material";
+import { Avatar, Badge, Box, Card, CardActions, CardContent, CardHeader, CardMedia, Divider, IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 import dateFormatter from "../../utils/dateFormatter";
@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useRequest } from "ahooks";
 import exhibitsApi from "../../api/ExhibitsApi";
 import CommentStripe from "../CommentStripe/CommentStripe";
+import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
 
 interface PostProps {
     id: number,
@@ -92,22 +93,13 @@ const Post = (props: PostProps) => {
                     isOpen={isCommentsOpen}
                 />
             </Card>
-            <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-                <DialogTitle>Delete post?</DialogTitle>
-                <DialogActions>
-                    <Button onClick={() => setDeleteDialogOpen(false)} disabled={deleteLoading}>
-                        Cancel
-                    </Button>
-                    <Button
-                        onClick={() => runDelete()}
-                        color="error"
-                        variant="contained"
-                        disabled={deleteLoading}
-                    >
-                        {deleteLoading ? "Deleting..." : "Delete"}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <DeleteConfirmationModal
+                deleteDialogOpen={deleteDialogOpen}
+                loading={deleteLoading}
+                onConfirm={runDelete}
+                setDeleteDialogOpen={setDeleteDialogOpen}
+                title="Delete Post?"
+            />
         </>
 
     );

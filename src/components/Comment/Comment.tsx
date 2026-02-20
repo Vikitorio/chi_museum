@@ -1,9 +1,10 @@
-import { Avatar, Box, Button, Dialog, DialogActions, DialogTitle, Divider, IconButton, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material";
+import { Avatar, Box, Divider, IconButton, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material";
 import dateFormatter from "../../utils/dateFormatter";
 import { useRequest } from "ahooks";
 import commentApi from "../../api/CommentApi";
 import { useState } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
 
 interface CommentProps {
     id: number,
@@ -58,22 +59,14 @@ const Comment = (props: CommentProps) => {
                 </Typography>
             </ListItemText>
         </ListItem>
-        <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-            <DialogTitle>Delete comment?</DialogTitle>
-            <DialogActions>
-                <Button onClick={() => setDeleteDialogOpen(false)} disabled={deleteLoading}>
-                    Cancel
-                </Button>
-                <Button
-                    onClick={() => runDelete()}
-                    color="error"
-                    variant="contained"
-                    disabled={deleteLoading}
-                >
-                    {deleteLoading ? "Deleting..." : "Delete"}
-                </Button>
-            </DialogActions>
-        </Dialog></>);
+        <DeleteConfirmationModal
+            deleteDialogOpen={deleteDialogOpen}
+            loading={deleteLoading}
+            onConfirm={runDelete}
+            setDeleteDialogOpen={setDeleteDialogOpen}
+            title="Delete Comment?"
+        />
+    </>);
 }
 
 export default Comment;
