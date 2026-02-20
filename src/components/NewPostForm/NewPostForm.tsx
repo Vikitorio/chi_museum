@@ -1,17 +1,26 @@
-import { Box, Button, Card, CardContent, CardHeader, styled, TextField, FormHelperText } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  styled,
+  TextField,
+  FormHelperText,
+} from "@mui/material";
 import { useState, useEffect } from "react";
 import { Formik, Form, type FormikHelpers } from "formik";
 import * as Yup from "yup";
 
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
   height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
+  overflow: "hidden",
+  position: "absolute",
   bottom: 0,
   left: 0,
-  whiteSpace: 'nowrap',
+  whiteSpace: "nowrap",
   width: 1,
 });
 
@@ -33,7 +42,8 @@ const validationSchema = Yup.object<NewPostValues>({
     .test(
       "fileType",
       "Only JPG or PNG",
-      (value) => value !== null && ["image/jpeg", "image/png"].includes(value.type)
+      (value) =>
+        value !== null && ["image/jpeg", "image/png"].includes(value.type),
     ),
 });
 
@@ -55,12 +65,21 @@ const NewPostForm = ({ onSubmit }: NewPostProps) => {
           validationSchema={validationSchema}
           onSubmit={(
             values: NewPostValues,
-            { setSubmitting }: FormikHelpers<NewPostValues>
+            { setSubmitting }: FormikHelpers<NewPostValues>,
           ) => {
-            void Promise.resolve(onSubmit(values)).finally(() => setSubmitting(false));
+            void Promise.resolve(onSubmit(values)).finally(() =>
+              setSubmitting(false),
+            );
           }}
         >
-          {({ values, errors, touched, handleChange, setFieldValue, isSubmitting }) => (
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            setFieldValue,
+            isSubmitting,
+          }) => (
             <Form>
               <Box>
                 <Button component="label" variant="text">
@@ -78,17 +97,19 @@ const NewPostForm = ({ onSubmit }: NewPostProps) => {
                 </Button>
 
                 {touched.image && errors.image ? (
-                  <FormHelperText error >
-                    {errors.image}
-                  </FormHelperText>
+                  <FormHelperText error>{errors.image}</FormHelperText>
                 ) : (
-                  <FormHelperText >
-                    Only JPG or PNG accepted.
-                  </FormHelperText>
+                  <FormHelperText>Only JPG or PNG accepted.</FormHelperText>
                 )}
               </Box>
 
-              <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginBottom: 8,
+                }}
+              >
                 {imagePreview && (
                   <img
                     src={imagePreview}
@@ -116,7 +137,13 @@ const NewPostForm = ({ onSubmit }: NewPostProps) => {
                 }}
               />
 
-              <Button fullWidth variant="contained" type="submit" sx={{ marginTop: "20px" }} disabled={isSubmitting}>
+              <Button
+                fullWidth
+                variant="contained"
+                type="submit"
+                sx={{ marginTop: "20px" }}
+                disabled={isSubmitting}
+              >
                 Submit
               </Button>
             </Form>
